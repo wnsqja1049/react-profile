@@ -7,6 +7,8 @@ import './style.css';
 import App from './App';
 import FullPageApp from './FullPageApp';
 import PageableApp from './PageableApp';
+import CursorApp from './CursorApp';
+import AnotherCursorApp from './AnotherCursorApp';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,7 +16,9 @@ root.render(
   {/* <React.StrictMode> */}
     {/* <App /> */}
     {/* <FullPageApp /> */}
-    <PageableApp />
+    {/* <PageableApp /> */}
+    {/* <CursorApp /> */}
+    <AnotherCursorApp />
 {/* </React.StrictMode> */}
 </>
 );
