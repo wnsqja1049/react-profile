@@ -1,0 +1,9 @@
+.Main .MainTitle {
+  position: absolute;
+  top: 50vh;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-size: 2rem;
+  color:white;
+}
