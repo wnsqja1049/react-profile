@@ -1,12 +1,26 @@
 import Pageable from 'pageable';
-import React, { useEffect, useRef } from 'react';
+import styled from "styled-components";
+
+import Cursor from './components/MyCursor';
+
+import React, { useState, useEffect, useRef } from 'react';
+import './style.css';
+
+const PageName = styled.div`
+position:sticky;
+top:0px;
+left:0px;
+border:solid blue 4px;
+`;
 
 function PageableApp() {
+
+	const [ pageName, setPageName ] = useState('intro')
 	
 	const containerRef = useRef();
 
 	useEffect(() => {
-		new Pageable(containerRef.current, {
+		const pages = new Pageable(containerRef.current, {
 			//childSelector: "[data-anchor]", // CSS3 selector string for the pages
 			anchors: [], // define the page anchors
 			pips: true, // display the pips
@@ -34,25 +48,47 @@ function PageableApp() {
 				return -endPos * (currentTime /= interval) * (currentTime - 2) + startPos;
 			},
 			onInit: () => {},
-			onUpdate: () => {},    
-			onBeforeStart: () => {},
-			onStart: () => {},
-			onScroll: () => {},
-			onFinish: () => {},
+			onUpdate: (data) => {}, 
+			onBeforeStart: (index) => {},
+			onStart: (pageName) => {
+				setPageName(pageName);
+			},
+			onScroll: supdate,
+			onFinish: (data) => {},
 		});
 	}, [])
 
+	const supdate = (data) => {
+		//console.log(data);
+	}
 
 	return (
 		<>
+			<nav>
+				<ul>
+					<li><a href={"#page-1"}><span></span></a></li>
+					<li><a href={"#page-2"}><span></span></a></li>
+					<li><a href={"#page-3"}><span></span></a></li>
+					<li><a href={"#page-4"}><span></span></a></li>
+				</ul>
+			</nav>
 			<div id="container" ref={containerRef}>
 				<div data-anchor="page-1" style={{'background': '#9DC8C8'}}>1</div>
 				<div data-anchor="page-2" style={{'background': '#58C9B9'}}>2</div>
-				<div data-anchor="page-3" style={{'background': '#519D9E'}}>3</div>
-				<div data-anchor="page-4" style={{'background': '#D1B6E1'}}>4</div>
+				<div data-anchor="page-3" style={{'background': '#D1B6E1'}}>3</div>
+				<div data-anchor="page-4" style={{'background': '#519D9E'}}>4</div>
 			</div>
 		</>
 	);
+}
+
+const Container = styled.div`
+background: #58C9B9;
+`;
+export function SecondPage() {
+	return (
+		<Container data-anchor="page-2" style={{'background': '#58C9B9'}}>2</Container>
+	)
 }
 
 export default PageableApp;
