@@ -1,0 +1,28 @@
+.slide-bg {
+    display: none;
+    position:fixed;
+    background-color: black;
+    left:0px;
+    top:0px;
+    width:100vw;
+    height:100vh;
+    opacity: 0.2;
+    z-index: 101;
+}
+
+
+
+.slide-nav {
+    display: none;
+    position:fixed;
+    background-color: black;
+    right:0px;
+    top:0px;
+    width:400px;
+    height:100vh;
+    z-index: 101;
+}
+.slide-nav a {
+    color: inherit;
+    text-decoration: none;
+}

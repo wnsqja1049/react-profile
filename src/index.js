@@ -4,6 +4,9 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import './style.css';
 
+import { Provider } from 'react-redux';
+import store from './redux/store'
+
 import App from './App';
 import FullPageApp from './FullPageApp';
 import PageableApp from './PageableApp';
@@ -11,6 +14,7 @@ import CursorApp from './CursorApp';
 import AnotherCursorApp from './AnotherCursorApp';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <>
     {/* <React.StrictMode> */}
@@ -18,7 +22,9 @@ root.render(
     {/* <FullPageApp /> */}
     {/* <PageableApp /> */}
     {/* <CursorApp /> */}
-    <PageableApp />
+    <Provider store={store}>
+      <PageableApp />
+    </Provider>
     {/* </React.StrictMode> */}
   </>
 );

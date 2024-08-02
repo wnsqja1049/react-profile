@@ -1,7 +1,11 @@
 import Pageable from 'pageable';
 import styled from "styled-components";
 
+import Pips from './components/Pips';
 import Cursor from './components/MyCursor';
+import Header from './components/Header';
+
+import anime from 'animejs';
 
 import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
@@ -18,6 +22,7 @@ function PageableApp() {
 	const [ pageName, setPageName ] = useState('intro')
 	
 	const containerRef = useRef();
+	const buttonRef = useRef();
 
 	useEffect(() => {
 		const pages = new Pageable(containerRef.current, {
@@ -47,33 +52,70 @@ function PageableApp() {
 				// the easing function used for the scroll animation
 				return -endPos * (currentTime /= interval) * (currentTime - 2) + startPos;
 			},
-			onInit: () => {},
+			onInit: (data) => {
+				console.log(data);
+
+				if(data.index === 0) {
+					anime({
+						targets: buttonRef.current,
+						duration: 1200,
+						opacity: [0, 1],
+						delay: 700
+					})
+				}
+			},
 			onUpdate: (data) => {}, 
 			onBeforeStart: (index) => {},
 			onStart: (pageName) => {
+				console.log(pageName);
 				setPageName(pageName);
+
+				if(pageName === 'page-1') {
+					anime({
+						targets: buttonRef.current,
+						duration: 1200,
+						opacity: [0, 1],
+						delay: 700
+					})
+				}
 			},
-			onScroll: supdate,
-			onFinish: (data) => {},
+			onScroll: () => {},
+			onFinish: (data) => {
+				console.log(data);
+
+				// if(data.index === 0) {
+				// 	anime({
+				// 		targets: buttonRef.current,
+				// 		duration: 1200,
+				// 		opacity: [0, 1],
+				// 		delay: 700
+				// 	})
+				// }
+			},
 		});
 	}, [])
 
-	const supdate = (data) => {
-		//console.log(data);
-	}
-
 	return (
 		<>
-			<nav>
-				<ul>
-					<li><a href={"#page-1"}><span></span></a></li>
-					<li><a href={"#page-2"}><span></span></a></li>
-					<li><a href={"#page-3"}><span></span></a></li>
-					<li><a href={"#page-4"}><span></span></a></li>
-				</ul>
-			</nav>
+			<Header/>
+			<Cursor/>
+			<Pips/>
+
 			<div id="container" ref={containerRef}>
-				<div data-anchor="page-1" style={{'background': '#9DC8C8'}}>1</div>
+				<div data-anchor="page-1" style={{'background': '#9DC8C8'}}>1
+					<button ref={buttonRef} 
+					style={{opacity:0,
+						marginTop:'100px'
+					}}
+					onClick={() => {
+						anime({
+							targets: buttonRef.current,
+							duration: 1200,
+							opacity: [0, 1],
+							delay: 700
+						})
+					}}>anime button</button>
+				</div>
 				<div data-anchor="page-2" style={{'background': '#58C9B9'}}>2</div>
 				<div data-anchor="page-3" style={{'background': '#D1B6E1'}}>3</div>
 				<div data-anchor="page-4" style={{'background': '#519D9E'}}>4</div>
