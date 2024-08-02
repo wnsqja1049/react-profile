@@ -1,9 +1,11 @@
+import anime from 'animejs';
+
 import '../css/Header.css';
 import '../css/Common.css';
 import '../css/SlideNav.css';
 
 import { useSelector, useDispatch } from 'react-redux';
-import anime from 'animejs';
+
 
 import {
     setSlideMenu,
@@ -119,8 +121,7 @@ export default function Header() {
     return (
         <>
             <header className="Header">
-                <h1>타이틀</h1>
-
+                <h1>Junbeom</h1>
                 <button className='menu-button' onClick={open}>메뉴</button>
             </header>
 
@@ -128,13 +129,15 @@ export default function Header() {
             <div ref={slideBgRef} className='slide-bg' onClick={close}></div>
 
             <div ref={slideRef} className='slide-nav'>
-                <button  onClick={close}>닫기</button>
-                <ul>
-                    <li><a href="#page-1" onClick={close}>page-1</a></li>
-                    <li><a href="#page-2" onClick={close}>page-2</a></li>
-                    <li><a href="#page-3" onClick={close}>page-3</a></li>
-                    <li><a href="#page-4" onClick={close}>page-4</a></li>
-                </ul>
+                <div className='container'>
+                    <button className='close-button' onClick={close}>닫기</button>
+                    <ul>
+                        <li><a href="#page-1" onClick={close}>page-1</a></li>
+                        <li><a href="#page-2" onClick={close}>page-2</a></li>
+                        <li><a href="#page-3" onClick={close}>page-3</a></li>
+                        <li><a href="#page-4" onClick={close}>page-4</a></li>
+                    </ul>
+                </div>
             </div>
         </>
 

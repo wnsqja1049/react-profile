@@ -1,69 +1,138 @@
-// import React, { useRef } from 'react';
-// import gsap from 'gsap-trial';
-// import { ScrollTrigger } from 'gsap-trial/ScrollTrigger';
-// import { ScrollSmoother } from 'gsap-trial/ScrollSmoother';
-// import { useGSAP } from '@gsap/react';
+import Pageable from 'pageable';
+import styled from "styled-components";
 
-// import MatterMain from './MatterMain';
-// import AboutMe from './AboutMe';
+import Pips from './components/Pips';
+import Cursor from './components/MyCursor';
+import Header from './components/Header';
 
-// gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollSmoother);
+import anime from 'animejs';
 
-// function App() {
-// 	const main = useRef();
-// 	const smoother = useRef();
+import React, { useState, useEffect, useRef } from 'react';
+import './style.css';
+import Home from './pages/Home';
 
-// 	const scrollTo = (target) => {
-// 	  smoother.current.scrollTo(target, true, 'center center');
-// 	};
+const PageName = styled.div`
+position:sticky;
+top:0px;
+left:0px;
+border:solid blue 4px;
+`;
 
-// 	useGSAP(() => {
-// 			smoother.current = ScrollSmoother.create({
-// 				smooth: 2,
-// 				effects: true,
-// 			});
-// 			ScrollTrigger.create({
-// 				trigger: '.box-c',
-// 				pin: false,
-// 				start: 'center center',
-// 				end: '+=300',
-// 				markers: false,
-// 			});
-// 		},
-// 		{ scope: main }
-// 	);
+function App() {
 
-// 	return (
-// 		<>
-// 			<div id="smooth-wrapper" ref={main}>
-// 				<div id="smooth-content">
-// 					<MatterMain />
-// 					<header className="header">
-// 						<h2 className="title">GSAP ScrollSmoother in React</h2>
-// 						<button className="button" onClick={()=>{scrollTo('.career')}}>Go to Career</button>
-// 						<button className="button" onClick={()=>{scrollTo('.project')}}>Go to Projects</button>
-// 					</header>
-// 					{/* <div className="box box-a gradient-blue" data-speed="0.5">a</div>
-// 					<div className="box box-b gradient-orange" data-speed="0.8">b</div>
-// 					<div className="box box-c gradient-purple" data-speed="1.5">c</div> */}
+	const [ pageName, setPageName ] = useState('intro')
+	
+	const containerRef = useRef();
+	const buttonRef = useRef();
 
-// 					<div className='career' data-speed="1.0" style={{
-// 						border:'solid red', 
-// 						top:'2000px',
-// 						position:'absolute'}}>커리어</div>
+	useEffect(() => {
+		const pages = new Pageable(containerRef.current, {
+			//childSelector: "[data-anchor]", // CSS3 selector string for the pages
+			anchors: [], // define the page anchors
+			pips: true, // display the pips
+			animation: 700, // the duration in ms of the scroll animation
+			delay: 0, // the delay in ms before the scroll animation starts
+			throttle: 50, // the interval in ms that the resize callback is fired
+			orientation: "vertical", // or horizontal
+			swipeThreshold: 50, // swipe / mouse drag distance (px) before firing the page change event
+			freeScroll: false, // allow manual scrolling when dragging instead of automatically moving to next page
+			navPrevEl: false, // define an element to use to scroll to the previous page (CSS3 selector string or Element reference)
+			navNextEl: false, // define an element to use to scroll to the next page (CSS3 selector string or Element reference)
+			infinite: false, // enable infinite scrolling (from 0.4.0)
+			// slideshow: { // enable slideshow that cycles through your pages automatically (from 0.4.0)
+			// 	interval: 0, // time in ms between page change,
+			// 	delay: 0 // delay in ms after the interval has ended and before changing page
+			// },
+			events: {
+				wheel: true, // enable / disable mousewheel scrolling
+				mouse: true, // enable / disable mouse drag scrolling
+				touch: true, // enable / disable touch / swipe scrolling
+				keydown: true, // enable / disable keyboard navigation
+			},
+			easing: function(currentTime, startPos, endPos, interval) {
+				// the easing function used for the scroll animation
+				return -endPos * (currentTime /= interval) * (currentTime - 2) + startPos;
+			},
+			onInit: (data) => {
+				console.log(data);
 
-// 					<div className='project' data-speed="1.0" style={{
-// 						border:'solid red', 
-// 						top:'3000px',
-// 						position:'absolute'}}>프로젝트</div>
+				if(data.index === 0) {
+					anime({
+						targets: buttonRef.current,
+						duration: 1200,
+						opacity: [0, 1],
+						delay: 700
+					})
+				}
+			},
+			onUpdate: (data) => {}, 
+			onBeforeStart: (index) => {},
+			onStart: (pageName) => {
+				console.log(pageName);
+				setPageName(pageName);
 
-// 					<div data-speed="1.0">
-// 						<AboutMe />
-// 					</div>
-// 				</div>
-// 			</div>
-// 		</>
-// 	);
-// }
+				if(pageName === 'page-1') {
+					anime({
+						targets: buttonRef.current,
+						duration: 1200,
+						opacity: [0, 1],
+						delay: 700
+					})
+				}
+			},
+			onScroll: () => {},
+			onFinish: (data) => {
+				console.log(data);
 
-// export default App;
+				// if(data.index === 0) {
+				// 	anime({
+				// 		targets: buttonRef.current,
+				// 		duration: 1200,
+				// 		opacity: [0, 1],
+				// 		delay: 700
+				// 	})
+				// }
+			},
+		});
+	}, [])
+
+	return (
+		<>
+			<Header/>
+			<Cursor/>
+			<Pips/>
+
+			<div id="container" ref={containerRef}>
+				<div data-anchor="page-1" style={{'background': '#9DC8C8'}}>1
+					<button ref={buttonRef} 
+					style={{opacity:0,
+						marginTop:'100px'
+					}}
+					onClick={() => {
+						anime({
+							targets: buttonRef.current,
+							duration: 1200,
+							opacity: [0, 1],
+							delay: 700
+						})
+					}}>anime button</button>
+					<Home/>
+				</div>
+				<div data-anchor="page-2" style={{'background': '#58C9B9'}}>2</div>
+				<div data-anchor="page-3" style={{'background': '#D1B6E1'}}>3</div>
+				<div data-anchor="page-4" style={{'background': '#519D9E'}}>4</div>
+			</div>
+		</>
+	);
+}
+
+const Container = styled.div`
+background: #58C9B9;
+`;
+export function SecondPage() {
+	return (
+		<Container data-anchor="page-2" style={{'background': '#58C9B9'}}>2</Container>
+	)
+}
+
+export default App;
